@@ -33,6 +33,25 @@ namespace Lentitud
             foreach (var item in di.GetFiles())
             {
                 lbArchivos.Items.Add(item.Name);
+                //busca un archivo que no se le pasa, se debe seleccionar el archivo exsacto
+                TextReader leer = new StreamReader(@"C:\Origen\" + item.Name);
+
+                string texto_log = leer.ReadToEnd();
+                string tipo_tarj = "| RES - Job name:            ";
+                if (texto_log.Contains(tipo_tarj))
+                {
+                    MessageBox.Show("contiene");
+                }
+                else
+                {
+                    MessageBox.Show("algo va mal");
+                }
+
+
+
+
+                leer.Close();
+                
             }
         }
     }
