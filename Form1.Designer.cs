@@ -31,6 +31,7 @@ namespace Lentitud
         {
             this.btnRuta = new System.Windows.Forms.Button();
             this.lbArchivos = new System.Windows.Forms.ListBox();
+            this.lbresultado = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnRuta
@@ -52,16 +53,27 @@ namespace Lentitud
             this.lbArchivos.Size = new System.Drawing.Size(272, 364);
             this.lbArchivos.TabIndex = 1;
             // 
+            // lbresultado
+            // 
+            this.lbresultado.AutoSize = true;
+            this.lbresultado.Location = new System.Drawing.Point(427, 210);
+            this.lbresultado.Name = "lbresultado";
+            this.lbresultado.Size = new System.Drawing.Size(51, 20);
+            this.lbresultado.TabIndex = 2;
+            this.lbresultado.Text = "label1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1310, 586);
+            this.Controls.Add(this.lbresultado);
             this.Controls.Add(this.lbArchivos);
             this.Controls.Add(this.btnRuta);
             this.Name = "Form1";
             this.Text = "Lentitud del centro";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -69,6 +81,7 @@ namespace Lentitud
 
         private System.Windows.Forms.Button btnRuta;
         private System.Windows.Forms.ListBox lbArchivos;
+        private System.Windows.Forms.Label lbresultado;
     }
 }
 
