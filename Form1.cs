@@ -20,59 +20,73 @@ namespace Lentitud
         private void btnRuta_Click(object sender, EventArgs e)
         {
             string RutaDirectorio = null;
-            lbArchivos.Items.Clear();
 
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
-            if (fbd.ShowDialog() == DialogResult.OK) 
+            lbArchivos.Items.Clear();
+
+            if (fbd.ShowDialog() == DialogResult.OK)
             {
                 RutaDirectorio = fbd.SelectedPath;
             }
-            else {
+            else
+            {
                 RutaDirectorio = "C:";
+                MessageBox.Show("Al no determinar la ruta se dejara en: " + RutaDirectorio);
             }
 
             DirectoryInfo di = new DirectoryInfo(@RutaDirectorio);
-            MessageBox.Show(di.ToString());
+
             foreach (var item in di.GetFiles())
             {
                 lbArchivos.Items.Add(item.Name);
                 //busca un archivo que no se le pasa, se debe seleccionar el archivo exsacto
-                TextReader leer = new StreamReader(di.ToString() +@"\"+ item.Name);
-
+                TextReader leer = new StreamReader(di.ToString() + @"\" + item.Name);
                 string texto_log = leer.ReadToEnd();
                 string tipo_tarj = "RES - Job name:            ";
                 string resultado_tipo;
                 int resultado_cantidad;
                 string resultado_tiempo;
-                bool bien=false;
-                if (texto_log.Contains(tipo_tarj))
-                {
-                    //MessageBox.Show("contiene");
-                    //MessageBox.Show("la cadena esta en la posicion" + texto_log.IndexOf(tipo_tarj_MC));
-                    MessageBox.Show("el plastico es " + texto_log.Substring(texto_log.IndexOf(tipo_tarj)+27, 2));
-                    resultado_tipo = texto_log.Substring(texto_log.IndexOf(tipo_tarj) + 27, 2);
-                    bien = true;
-                }
-                else
-                {
-                    MessageBox.Show("algo va mal");
-                }
-                if (bien == true)
-                {
-                    string cantidad_tarj = "RES - Cards to produce:    ";
-                    //MessageBox.Show("la cadena esta " + texto_log.IndexOf(cantidad_tarj));
-                    MessageBox.Show("la cantidad de tarjetas son" + texto_log.Substring(texto_log.IndexOf(cantidad_tarj) + 27, 3));
-                    resultado_cantidad = Convert.ToInt32(texto_log.Substring(texto_log.IndexOf(cantidad_tarj) + 27, 3));
-                    resultado_tipo = texto_log.Substring(texto_log.IndexOf(tipo_tarj) + 27, 2);
-                    lbresultado.Text = resultado_tipo + "    " + resultado_cantidad;
-                }
-                else
-                {
-                }
+                string tiempo_prod = "| RES - Time Run  : ";
+                //bool bien = false;
+                resultado_tipo = texto_log.Substring(texto_log.IndexOf(tipo_tarj) + 27, 2);
+                string cantidad_tarj = "RES - Cards to produce:    ";
+                resultado_cantidad = Convert.ToInt32(texto_log.Substring(texto_log.IndexOf(cantidad_tarj) + 27, 3));
+                resultado_tiempo = texto_log.Substring(texto_log.IndexOf(tiempo_prod) + 20, 8);
+                string resultado = resultado_tipo + "    " + resultado_cantidad + "    " + resultado_tiempo;
+                lbresultado.Text = resultado;
                 leer.Close();
-                
             }
+        }
+
+        private void Extraer_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void Extraer_archivo(string Ruta,string datos,string nombre_archivo)
+        {
+
+        }
+
+        private void Ruta_Destino_Click(object sender, EventArgs e)
+        {
+            string RutaDirectorio = null;
+
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+            lbArchivos.Items.Clear();
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                RutaDirectorio = fbd.SelectedPath;
+            }
+            else
+            {
+                RutaDirectorio = "C:";
+                MessageBox.Show("Al no determinar la ruta se dejara en: " + RutaDirectorio);
+            }
+
+            MessageBox.Show(fbd.SelectedPath);
         }
     }
 }
