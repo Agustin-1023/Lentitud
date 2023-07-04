@@ -16,11 +16,12 @@ namespace Lentitud
         {
             InitializeComponent();
         }
-
+        string RutaDirectorio = null;
+        string dato_resultado;
+        string Nombre_archivo;
+        string RutaDirectorioDestino = "C:";
         private void btnRuta_Click(object sender, EventArgs e)
         {
-            string RutaDirectorio = null;
-
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
             lbArchivos.Items.Clear();
@@ -41,51 +42,92 @@ namespace Lentitud
             {
                 lbArchivos.Items.Add(item.Name);
                 //busca un archivo que no se le pasa, se debe seleccionar el archivo exsacto
-                TextReader leer = new StreamReader(di.ToString() + @"\" + item.Name);
-                string texto_log = leer.ReadToEnd();
-                string tipo_tarj = "RES - Job name:            ";
-                string resultado_tipo;
-                int resultado_cantidad;
-                string resultado_tiempo;
-                string tiempo_prod = "| RES - Time Run  : ";
-                //bool bien = false;
-                resultado_tipo = texto_log.Substring(texto_log.IndexOf(tipo_tarj) + 27, 2);
-                string cantidad_tarj = "RES - Cards to produce:    ";
-                resultado_cantidad = Convert.ToInt32(texto_log.Substring(texto_log.IndexOf(cantidad_tarj) + 27, 3));
-                resultado_tiempo = texto_log.Substring(texto_log.IndexOf(tiempo_prod) + 20, 8);
-                string resultado = resultado_tipo + "    " + resultado_cantidad + "    " + resultado_tiempo;
-                lbresultado.Text = resultado;
-                leer.Close();
+                string nombre = "Production";
+                TextReader leer = new StreamReader(di.ToString() + @"\" + item.Name);                
+                if (item.Name.Substring(0,10) == nombre){
+                    string texto_log = leer.ReadToEnd();
+                    string tipo_tarj = "RES - Job name:            ";
+                    string resultado_tipo;
+                    int resultado_cantidad;
+                    string resultado_tiempo;
+                    string tiempo_prod = "| RES - Time Run  : ";
+                    resultado_tipo = texto_log.Substring(texto_log.IndexOf(tipo_tarj) + 27, 2);
+                    string cantidad_tarj = "RES - Cards to produce:    ";
+                    resultado_cantidad = Convert.ToInt32(texto_log.Substring(texto_log.IndexOf(cantidad_tarj) + 27, 3));
+                    resultado_tiempo = texto_log.Substring(texto_log.IndexOf(tiempo_prod) + 20, 8);
+                    string resultado = resultado_tipo + "    " + resultado_cantidad + "    " + resultado_tiempo;
+                    Nombre_archivo =  @"\"+item.Name.Substring(11, 8) + ".txt";
+                    lbresultado.Text = resultado;
+                    dato_resultado = resultado;
+                    leer.Close();
+
+                }
+                else
+                {
+                    MessageBox.Show("algunos archivos no eran logs de produccions y fueron ignorados.");
+                }
+                if (varios_archi.Checked == true)
+                {
+                    if (RutaDirectorioDestino.Length != 0 || dato_resultado != null || Nombre_archivo.Length != 0)
+                    {
+                        Extraer_archivo(RutaDirectorioDestino, dato_resultado, Nombre_archivo);
+                    }
+                    else
+                    {
+                        MessageBox.Show("falta asignar uno de estos datos");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("no entro");
+                }
             }
         }
 
         private void Extraer_Click(object sender, EventArgs e)
         {
-
+            if(RutaDirectorioDestino.Length != 0 || dato_resultado.Length != 0 || Nombre_archivo.Length != 0)
+            {
+                Extraer_archivo(RutaDirectorioDestino, dato_resultado, Nombre_archivo);
+            }
+            else
+            {
+                MessageBox.Show("falta asignar uno de estos datos");
+            }
         }
-        private void Extraer_archivo(string Ruta,string datos,string nombre_archivo)
+        public void Extraer_archivo(string Ruta,string datos,string nombre_archivo)
         {
+            //MessageBox.Show(RutaDirectorioDestino + nombre_archivo);
+            try
+            {
+                TextWriter escribe = new StreamWriter(RutaDirectorioDestino + nombre_archivo);
+                escribe.WriteLine(datos);
+                escribe.Close();
+            }
+            catch (Exception)
+            {
+                StreamWriter agrega = new StreamWriter(RutaDirectorioDestino + nombre_archivo);
+                agrega.WriteLine(datos);
+                agrega.Close();
+                throw;
+            }
 
         }
 
         private void Ruta_Destino_Click(object sender, EventArgs e)
         {
-            string RutaDirectorio = null;
-
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
             lbArchivos.Items.Clear();
 
             if (fbd.ShowDialog() == DialogResult.OK)
             {
-                RutaDirectorio = fbd.SelectedPath;
+                RutaDirectorioDestino = fbd.SelectedPath;
             }
             else
             {
-                RutaDirectorio = "C:";
-                MessageBox.Show("Al no determinar la ruta se dejara en: " + RutaDirectorio);
+                MessageBox.Show("Al no asignar la ruta se dejara en: " + RutaDirectorioDestino);
             }
-
             MessageBox.Show(fbd.SelectedPath);
         }
     }
