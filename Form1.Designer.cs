@@ -38,6 +38,7 @@ namespace Lentitud
             this.Ruta_dest = new System.Windows.Forms.Label();
             this.Extraer = new System.Windows.Forms.Button();
             this.lbresultado = new System.Windows.Forms.Label();
+            this.Datos_res = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // btnRuta
@@ -125,11 +126,21 @@ namespace Lentitud
             this.lbresultado.TabIndex = 2;
             this.lbresultado.Text = "label1";
             // 
+            // Datos_res
+            // 
+            this.Datos_res.FormattingEnabled = true;
+            this.Datos_res.ItemHeight = 20;
+            this.Datos_res.Location = new System.Drawing.Point(621, 130);
+            this.Datos_res.Name = "Datos_res";
+            this.Datos_res.Size = new System.Drawing.Size(272, 444);
+            this.Datos_res.TabIndex = 12;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1002, 586);
+            this.Controls.Add(this.Datos_res);
             this.Controls.Add(this.Extraer);
             this.Controls.Add(this.Ruta_dest);
             this.Controls.Add(this.Ruta_ori);
@@ -157,6 +168,7 @@ namespace Lentitud
         private System.Windows.Forms.Label Ruta_dest;
         private System.Windows.Forms.Button Extraer;
         private System.Windows.Forms.Label lbresultado;
+        private System.Windows.Forms.ListBox Datos_res;
     }
 }
 

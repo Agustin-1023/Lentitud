@@ -20,6 +20,7 @@ namespace Lentitud
         string dato_resultado;
         string Nombre_archivo;
         string RutaDirectorioDestino = "C:";
+        //List<string> resultados_list = new List<string>();
         private void btnRuta_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -58,16 +59,16 @@ namespace Lentitud
                     string resultado = resultado_tipo + "    " + resultado_cantidad + "    " + resultado_tiempo;
                     Nombre_archivo =  @"\"+item.Name.Substring(11, 8) + ".txt";
                     lbresultado.Text = resultado;
-                    dato_resultado = dato_resultado + resultado + "\n";
-                    //MessageBox.Show(dato_resultado);
+                    //resultados_list.Add(resultado_tipo + "    " + resultado_cantidad + "    " + resultado_tiempo);
+                    Datos_res.Items.Add(resultado);
                     leer.Close();
-                    //Extraer_archivo(RutaDirectorioDestino, dato_resultado, Nombre_archivo);
                 }
                 else
                 {
                     archivosDistintos = true;
                 }
             }
+            //string resultado_con_linea = string.Join(Environment.NewLine, resultados_list);
             if (archivosDistintos == true)
             {
                 MessageBox.Show("algunos archivos no eran logs de produccions y fueron ignorados.");
@@ -80,8 +81,10 @@ namespace Lentitud
         {
             if (RutaDirectorioDestino != null || dato_resultado != null || Nombre_archivo != null)
             {
+                string datos_lb = string.Join(Environment.NewLine, Datos_res.Items.OfType<object>());
 
-                Extraer_archivo(RutaDirectorioDestino, dato_resultado, Nombre_archivo);
+                MessageBox.Show(datos_lb);
+                Extraer_archivo(RutaDirectorioDestino, datos_lb, Nombre_archivo);
             }
             else
             {
@@ -94,6 +97,7 @@ namespace Lentitud
             {
                 if (File.Exists(RutaDirectorio + Nombre_archivo))
                 {
+
                     StreamWriter agrega = new StreamWriter(RutaDirectorioDestino + nombre_archivo);
                     agrega.WriteLine(datos);
                     agrega.Close();
