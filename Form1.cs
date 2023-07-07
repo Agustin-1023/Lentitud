@@ -58,9 +58,10 @@ namespace Lentitud
                     string resultado = resultado_tipo + "    " + resultado_cantidad + "    " + resultado_tiempo;
                     Nombre_archivo =  @"\"+item.Name.Substring(11, 8) + ".txt";
                     lbresultado.Text = resultado;
-                    dato_resultado = resultado;
+                    dato_resultado = dato_resultado + resultado + "\n";
+                    //MessageBox.Show(dato_resultado);
                     leer.Close();
-
+                    //Extraer_archivo(RutaDirectorioDestino, dato_resultado, Nombre_archivo);
                 }
                 else
                 {
@@ -86,12 +87,22 @@ namespace Lentitud
         {
             try
             {
-                if (Ruta != null || datos != null || nombre_archivo != null)
+                if (File.Exists(RutaDirectorio + Nombre_archivo))
                 {
-                    MessageBox.Show("RUta" + Ruta + "datos" + datos + "nombre " + nombre_archivo);
+                    StreamWriter agrega = new StreamWriter(RutaDirectorioDestino + nombre_archivo);
+                    agrega.WriteLine(datos);
+                    agrega.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Ruta" + Ruta + "datos" + datos + "nombre " + nombre_archivo);
                     TextWriter escribe = new StreamWriter(RutaDirectorioDestino + nombre_archivo);
                     escribe.WriteLine(datos);
                     escribe.Close();
+                }
+                if (Ruta != null || datos != null || nombre_archivo != null)
+                {
+
                 }
                 else
                 {
@@ -120,7 +131,8 @@ namespace Lentitud
             {
                 MessageBox.Show("Al no asignar la ruta se dejara en: " + RutaDirectorioDestino);
             }
-            MessageBox.Show(fbd.SelectedPath);
+            //MessageBox.Show(fbd.SelectedPath);
+            Ruta_dest.Text = fbd.SelectedPath;
         }
 
         private void lbArchivos_SelectedIndexChanged(object sender, EventArgs e)
