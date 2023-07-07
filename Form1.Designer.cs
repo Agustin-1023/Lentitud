@@ -62,6 +62,7 @@ namespace Lentitud
             this.lbArchivos.Name = "lbArchivos";
             this.lbArchivos.Size = new System.Drawing.Size(272, 364);
             this.lbArchivos.TabIndex = 1;
+            this.lbArchivos.SelectedIndexChanged += new System.EventHandler(this.lbArchivos_SelectedIndexChanged);
             // 
             // lbresultado
             // 
@@ -165,7 +166,7 @@ namespace Lentitud
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1310, 586);
+            this.ClientSize = new System.Drawing.Size(625, 586);
             this.Controls.Add(this.Extraer);
             this.Controls.Add(this.Ruta_dest);
             this.Controls.Add(this.Ruta_ori);

@@ -66,28 +66,15 @@ namespace Lentitud
                 {
                     MessageBox.Show("algunos archivos no eran logs de produccions y fueron ignorados.");
                 }
-                if (varios_archi.Checked == true)
-                {
-                    if (RutaDirectorioDestino.Length != 0 || dato_resultado != null || Nombre_archivo.Length != 0)
-                    {
-                        Extraer_archivo(RutaDirectorioDestino, dato_resultado, Nombre_archivo);
-                    }
-                    else
-                    {
-                        MessageBox.Show("falta asignar uno de estos datos");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("no entro");
-                }
             }
+            Ruta_ori.Text = di.FullName;
         }
 
         private void Extraer_Click(object sender, EventArgs e)
         {
-            if(RutaDirectorioDestino.Length != 0 || dato_resultado.Length != 0 || Nombre_archivo.Length != 0)
+            if (RutaDirectorioDestino != null || dato_resultado != null || Nombre_archivo != null)
             {
+
                 Extraer_archivo(RutaDirectorioDestino, dato_resultado, Nombre_archivo);
             }
             else
@@ -97,12 +84,19 @@ namespace Lentitud
         }
         public void Extraer_archivo(string Ruta,string datos,string nombre_archivo)
         {
-            //MessageBox.Show(RutaDirectorioDestino + nombre_archivo);
             try
             {
-                TextWriter escribe = new StreamWriter(RutaDirectorioDestino + nombre_archivo);
-                escribe.WriteLine(datos);
-                escribe.Close();
+                if (Ruta != null || datos != null || nombre_archivo != null)
+                {
+                    MessageBox.Show("RUta" + Ruta + "datos" + datos + "nombre " + nombre_archivo);
+                    TextWriter escribe = new StreamWriter(RutaDirectorioDestino + nombre_archivo);
+                    escribe.WriteLine(datos);
+                    escribe.Close();
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo extraer.");
+                }
             }
             catch (Exception)
             {
@@ -118,8 +112,6 @@ namespace Lentitud
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
 
-            lbArchivos.Items.Clear();
-
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 RutaDirectorioDestino = fbd.SelectedPath;
@@ -129,6 +121,11 @@ namespace Lentitud
                 MessageBox.Show("Al no asignar la ruta se dejara en: " + RutaDirectorioDestino);
             }
             MessageBox.Show(fbd.SelectedPath);
+        }
+
+        private void lbArchivos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
