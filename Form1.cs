@@ -23,7 +23,7 @@ namespace Lentitud
         private void btnRuta_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
-
+            bool archivosDistintos = false;
             lbArchivos.Items.Clear();
 
             if (fbd.ShowDialog() == DialogResult.OK)
@@ -65,8 +65,13 @@ namespace Lentitud
                 }
                 else
                 {
-                    MessageBox.Show("algunos archivos no eran logs de produccions y fueron ignorados.");
+                    archivosDistintos = true;
                 }
+            }
+            if (archivosDistintos == true)
+            {
+                MessageBox.Show("algunos archivos no eran logs de produccions y fueron ignorados.");
+                archivosDistintos = false;
             }
             Ruta_ori.Text = di.FullName;
         }
