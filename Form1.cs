@@ -20,13 +20,14 @@ namespace Lentitud
         string dato_resultado;
         string Nombre_archivo;
         string RutaDirectorioDestino = "C:";
-        //List<string> resultados_list = new List<string>();
+        int inicioFecha;
+        int largofecha;
         private void btnRuta_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             bool archivosDistintos = false;
             lbArchivos.Items.Clear();
-
+            
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 RutaDirectorio = fbd.SelectedPath;
@@ -38,7 +39,7 @@ namespace Lentitud
             }
 
             DirectoryInfo di = new DirectoryInfo(@RutaDirectorio);
-
+            
             foreach (var item in di.GetFiles())
             {
                 lbArchivos.Items.Add(item.Name);
@@ -55,11 +56,10 @@ namespace Lentitud
                     resultado_tipo = texto_log.Substring(texto_log.IndexOf(tipo_tarj) + 27, 2);
                     string cantidad_tarj = "RES - Cards to produce:    ";
                     resultado_cantidad = Convert.ToInt32(texto_log.Substring(texto_log.IndexOf(cantidad_tarj) + 27, 3));
-                    resultado_tiempo = texto_log.Substring(texto_log.IndexOf(tiempo_prod) + 20, 8);
+                    resultado_tiempo = texto_log.Substring(texto_log.IndexOf(tiempo_prod) + 20, largofecha);
                     string resultado = resultado_tipo + "    " + resultado_cantidad + "    " + resultado_tiempo;
-                    Nombre_archivo =  @"\"+item.Name.Substring(11, 8) + ".txt";
+                    Nombre_archivo =  @"\"+item.Name.Substring(inicioFecha, largofecha) + ".txt";
                     lbresultado.Text = resultado;
-                    //resultados_list.Add(resultado_tipo + "    " + resultado_cantidad + "    " + resultado_tiempo);
                     Datos_res.Items.Add(resultado);
                     leer.Close();
                 }
@@ -68,7 +68,6 @@ namespace Lentitud
                     archivosDistintos = true;
                 }
             }
-            //string resultado_con_linea = string.Join(Environment.NewLine, resultados_list);
             if (archivosDistintos == true)
             {
                 MessageBox.Show("algunos archivos no eran logs de produccions y fueron ignorados.");
@@ -140,13 +139,82 @@ namespace Lentitud
             {
                 MessageBox.Show("Al no asignar la ruta se dejara en: " + RutaDirectorioDestino);
             }
-            //MessageBox.Show(fbd.SelectedPath);
             Ruta_dest.Text = fbd.SelectedPath;
         }
 
         private void lbArchivos_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnodenar_Click(object sender, EventArgs e)
+        {
+            if(RutaDirectorio == null)
+            {
+                MessageBox.Show("no se indico la ruta a ordenar");
+            }
+            else
+            {
+                Ordenador();
+            };
+        }
+        private void Ordenador()
+        {
+            DirectoryInfo di = new DirectoryInfo(@RutaDirectorio);
+            List<String> nombres_archivos = new List<string>();
+            foreach(var item in di.GetFiles())
+            {
+
+                if (nombres_archivos.Contains(item.Name.Substring(inicioFecha, largofecha)))
+                {
+                }
+                else
+                {
+                    nombres_archivos.Add(item.Name.Substring(inicioFecha, largofecha));
+                }
+
+            }
+            string diToString = di.ToString();
+            if(largofecha == 0 || inicioFecha == 0)
+            {
+                MessageBox.Show("se necesitan valores para la fecha");
+            }
+            else
+            {
+                foreach (string nombres_carpetas in nombres_archivos)
+                {
+                    Directory.CreateDirectory(RutaDirectorioDestino + @"\" + nombres_carpetas);
+                    if (RutaDirectorioDestino == "C:")
+                    {
+                        MessageBox.Show("se crearan las carpetas por defecto en la unidad C:");
+                    }
+                }
+                MessageBox.Show("Carpetas creadas");
+                foreach (var item in di.GetFiles())
+                {
+                    try
+                    {
+                        File.Move(RutaDirectorio + @"\" + item.Name, RutaDirectorioDestino + @"\" + item.Name.Substring(inicioFecha, largofecha) + @"\" + item.Name);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("no se pudo mover el archivo");
+                        throw;
+                    }
+                }
+            }
+
+        }
+
+        private void validarFecha_Click(object sender, EventArgs e)
+        {
+            DirectoryInfo di = new DirectoryInfo(@RutaDirectorio);
+            foreach(var item in di.GetFiles())
+            {
+                fecha_validar.Text = item.Name.Substring(inicioFecha, largofecha);
+                inicioFecha = Convert.ToInt32(numericfechainicio.Value);
+                largofecha = Convert.ToInt32(numericlargofecha.Value);
+            }
         }
     }
 }
